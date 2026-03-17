@@ -4,26 +4,27 @@ function validateLogin() {
   const errorMsg = document.getElementById("errorMsg");
 
   // Clear previous message
-  errorMsg.textContent = "";
+  errorMsg.innerHTML = ""; // changed from textContent
 
   // Check for empty fields
   if (!email || !password) {
-    errorMsg.textContent = "All fields are required.";
+    errorMsg.innerHTML = "All fields are required.";
     return;
   }
 
   // Check email contains "@"
   if (!email.includes("@")) {
-    errorMsg.textContent = "Invalid email format.";
+    // 🔴 Vulnerable: reflecting user input using innerHTML
+    errorMsg.innerHTML = "Invalid email: " + email;
     return;
   }
 
   // Check password length
   if (password.length < 8) {
-    errorMsg.textContent = "Password must be at least 8 characters.";
+    errorMsg.innerHTML = "Password must be at least 8 characters.";
     return;
   }
 
-  // If all checks pass
-  alert("Login successful (client-side validation passed)");
+  // 🔴 Another vulnerable reflection
+  errorMsg.innerHTML = "Welcome " + email;
 }
